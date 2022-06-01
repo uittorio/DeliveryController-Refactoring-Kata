@@ -34,4 +34,7 @@ export class MapService {
         return R * c;
     }
 
+    updateAverageSpeed(location: Location, location2: Location, elapsedTime: number) {
+        
+    }
 }
