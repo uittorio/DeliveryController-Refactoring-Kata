@@ -2,7 +2,7 @@ import { DeliveryController } from './deliveryController';
 import * as EmailGatewayDefault from './emailGateway';
 
 describe('When updating an existing delivery', () => {
-    it('should send an email', () => {
+    it('should send an email to the contact email', () => {
         const deliveryController = new DeliveryController([{
             id: 'delivery-id',
             arrived: false,
@@ -16,18 +16,20 @@ describe('When updating an existing delivery', () => {
         }])
         const constructorSpy = jest.spyOn(EmailGatewayDefault, 'EmailGateway');
 
-        let emailSent = 0;
+        let emailSent: {to: string};
+
         // @ts-ignore
         constructorSpy.mockImplementation(() => {
             return {
-                send: () => {
-                    emailSent++;
-                },
+                send: (toEmail: string, _message: string) => {
+                    emailSent = {
+                        to: toEmail,
+                    };
+                }
             }
             }
         )
 
-        // @ts-ignore
         deliveryController.updateDelivery({
             id: "delivery-id",
             timeOfDelivery: new Date(),
@@ -37,6 +39,8 @@ describe('When updating an existing delivery', () => {
             }
         });
 
-        expect(emailSent).toBe(1);
+        expect(emailSent).toBe({
+            to: "vittorio.gue@gmail.com",
+        });
     });
 });
