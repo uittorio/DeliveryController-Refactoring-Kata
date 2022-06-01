@@ -1,5 +1,19 @@
 import { DeliveryController } from './deliveryController';
-import * as EmailGatewayDefault from './emailGateway';
+
+let emailSent = 0;
+
+jest.mock('./emailGateway', () => {
+    return {
+        EmailGateway: jest.fn().mockImplementation(() => {
+            return {
+                send: () => {
+                    emailSent++;
+                },
+            };
+        })
+    };
+});
+
 
 describe('When updating an existing delivery', () => {
     it('should send an email to the contact email', () => {
@@ -14,21 +28,7 @@ describe('When updating an existing delivery', () => {
             },
             onTime: false
         }])
-        const constructorSpy = jest.spyOn(EmailGatewayDefault, 'EmailGateway');
 
-        let emailSent: {to: string};
-
-        // @ts-ignore
-        constructorSpy.mockImplementation(() => {
-            return {
-                send: (toEmail: string, _message: string) => {
-                    emailSent = {
-                        to: toEmail,
-                    };
-                }
-            }
-            }
-        )
 
         deliveryController.updateDelivery({
             id: "delivery-id",
@@ -39,8 +39,7 @@ describe('When updating an existing delivery', () => {
             }
         });
 
-        expect(emailSent).toBe({
-            to: "vittorio.gue@gmail.com",
-        });
+
+        expect(emailSent).toBe(1);
     });
 });
