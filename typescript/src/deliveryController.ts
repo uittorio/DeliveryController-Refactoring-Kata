@@ -1,11 +1,10 @@
-import {EmailGateway} from './emailGateway'
-import {Location, MapService} from './mapService';
+import { Location, MapService } from './mapService';
 import { EmailService } from './deliveryController.spec';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
 export interface Delivery {
-   id: string
+    id: string
     contactEmail: string
     location: Location
     timeOfDelivery: Date
@@ -24,7 +23,7 @@ export class DeliveryController {
     #mapService: MapService;
     #deliveries: Array<Delivery>;
 
-    constructor(deliveries: Array<Delivery>, emailService: EmailService = new EmailGateway()) {
+    constructor(deliveries: Array<Delivery>, emailService: EmailService) {
         this.#deliveries = deliveries;
         this.#mapService = new MapService();
         this.#emailService = emailService;
@@ -33,7 +32,7 @@ export class DeliveryController {
     public async updateDelivery(event: DeliveryEvent) {
         let nextDelivery: Delivery;
 
-        for(let i = 0; i < this.#deliveries.length; i++){
+        for (let i = 0; i < this.#deliveries.length; i++) {
             const delivery = this.#deliveries[i];
             if (delivery.id === event.id) {
                 delivery.arrived = true;
@@ -44,11 +43,11 @@ export class DeliveryController {
                 delivery.timeOfDelivery = event.timeOfDelivery;
                 let message = `Regarding your delivery today at ${delivery.timeOfDelivery}. How likely would you be to recommend this delivery service to a friend? Click <a href='url'>here</a>`
                 this.#emailService.send(delivery.contactEmail, "Your feedback is important to us", message)
-                if(this.#deliveries.length > i + 1) {
+                if (this.#deliveries.length > i + 1) {
                     nextDelivery = this.#deliveries[i + 1];
                 }
 
-                if(!delivery.onTime && this.#deliveries.length > 1 && i > 0) {
+                if (!delivery.onTime && this.#deliveries.length > 1 && i > 0) {
                     var previousDelivery = this.#deliveries[i - 1];
                     var elapsedTime = delivery.timeOfDelivery.getTime() - previousDelivery.timeOfDelivery.getTime();
                     this.#mapService.updateAverageSpeed(previousDelivery.location, delivery.location, elapsedTime);
