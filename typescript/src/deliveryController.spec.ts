@@ -10,7 +10,7 @@ class FakeEmailGateway {
     }
 }
 
-describe('When an existing delivery is updated', function () {
+describe('When an existing delivery is updated',() => {
     it('should send an email', () => {
         emailSent = 0;
         const delivery: Delivery  = {
