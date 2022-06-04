@@ -6,6 +6,7 @@ const TEN_MINUTES = 1000 * 60 * 10;
 export interface Delivery {
     id: string
     contactEmail: string
+    contactPhoneNumber?: string
     location: Location
     timeOfDelivery: Date
     arrived: boolean
@@ -42,7 +43,7 @@ export class DeliveryController {
                 }
                 delivery.timeOfDelivery = event.timeOfDelivery;
                 let message = `Regarding your delivery today at ${delivery.timeOfDelivery}. How likely would you be to recommend this delivery service to a friend? Click <a href='url'>here</a>`
-                this.#customerNotificationService.send({ email: delivery.contactEmail }, "Your feedback is important to us", message)
+                this.#customerNotificationService.send({ email: delivery.contactEmail, number: delivery.contactPhoneNumber }, "Your feedback is important to us", message)
                 if (this.#deliveries.length > i + 1) {
                     nextDelivery = this.#deliveries[i + 1];
                 }
@@ -58,7 +59,7 @@ export class DeliveryController {
         if (nextDelivery !== undefined) {
             var nextEta = this.#mapService.calculateETA(event.location, nextDelivery.location);
             const message = `Your delivery to ${nextDelivery.location} is next, estimated time of arrival is in ${nextEta} minutes. Be ready!`
-            await this.#customerNotificationService.send({ email: nextDelivery.contactEmail }, "Your delivery will arrive soon.", message);
+            await this.#customerNotificationService.send({ email: nextDelivery.contactEmail,number: nextDelivery.contactPhoneNumber }, "Your delivery will arrive soon.", message);
         }
     }
 }

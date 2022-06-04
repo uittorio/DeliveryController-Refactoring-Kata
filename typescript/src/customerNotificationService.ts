@@ -1,5 +1,6 @@
 export interface Customer {
     email: string;
+    number: string;
 }
 
 export interface CustomerNotificationService {
