@@ -25,7 +25,6 @@ describe('When an existing delivery is updated',() => {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        // @ts-ignore
         new DeliveryController([delivery], new FakeEmailGateway()).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
@@ -50,8 +49,8 @@ describe('When a non existing delivery is updated', () => {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        // @ts-ignore
-        new DeliveryController([delivery, new FakeEmailGateway()]).updateDelivery({
+
+        new DeliveryController([delivery], new FakeEmailGateway()).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
                 latitude: 120,
