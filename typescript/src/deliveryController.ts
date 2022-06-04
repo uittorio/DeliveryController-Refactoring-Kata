@@ -23,10 +23,10 @@ export class DeliveryController {
     #mapService: MapService;
     #deliveries: Array<Delivery>;
 
-    constructor(deliveries: Array<Delivery>) {
+    constructor(deliveries: Array<Delivery>, emailGateway: EmailGateway = new EmailGateway()) {
         this.#deliveries = deliveries;
         this.#mapService = new MapService();
-        this.#emailGateway = new EmailGateway();
+        this.#emailGateway = emailGateway;
     }
 
     public async updateDelivery(event: DeliveryEvent) {
