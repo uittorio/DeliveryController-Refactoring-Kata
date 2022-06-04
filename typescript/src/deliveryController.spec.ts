@@ -3,15 +3,12 @@ import { Delivery, DeliveryController } from './deliveryController';
 
 let emailSent = 0;
 
-jest.mock('./emailGateway', () => {
-    return {
-        EmailGateway: class FakeEmailGateway {
-            send(){
-                emailSent++;
-            }
-        }
+
+class FakeEmailGateway {
+    send(){
+        emailSent++;
     }
-});
+}
 
 describe('When an existing delivery is updated', function () {
     it('should send an email', () => {
@@ -24,7 +21,8 @@ describe('When an existing delivery is updated', function () {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        new DeliveryController([delivery]).updateDelivery({
+        // @ts-ignore
+        new DeliveryController([delivery], new FakeEmailGateway()).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
                 latitude: 120,
@@ -48,7 +46,8 @@ describe('When a non existing delivery is updated', () => {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        new DeliveryController([delivery]).updateDelivery({
+        // @ts-ignore
+        new DeliveryController([delivery, new FakeEmailGateway()]).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
                 latitude: 120,
