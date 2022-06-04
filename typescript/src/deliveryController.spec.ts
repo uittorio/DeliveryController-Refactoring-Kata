@@ -23,9 +23,9 @@ describe('When the customer want to receive updates by email', () => {
                 timeOfDelivery: new Date()
             })
 
-            expect(fakeEmailService.emailSent).toStrictEqual({
+            expect(fakeEmailService.emailsSent).toStrictEqual([{
                 contactEmail: 'vittorio.gue@gmail.com'
-            });
+            }]);
         });
     });
 
@@ -50,7 +50,7 @@ describe('When the customer want to receive updates by email', () => {
                 timeOfDelivery: new Date()
             })
 
-            expect(fakeEmailService.emailSent).toBeUndefined()
+            expect(fakeEmailService.emailsSent).toEqual([])
         });
     });
 });
