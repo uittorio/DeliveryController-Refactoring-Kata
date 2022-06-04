@@ -1,9 +1,8 @@
 import nodemailer from "nodemailer";
-import Mail from "nodemailer/lib/mailer";
+import { EmailService } from './deliveryController.spec';
 
 
-export class EmailGateway{
-
+export class EmailGateway implements EmailService {
     #transport: nodemailer.Transporter
 
     constructor() {

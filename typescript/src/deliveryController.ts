@@ -1,5 +1,6 @@
 import {EmailGateway} from './emailGateway'
 import {Location, MapService} from './mapService';
+import { EmailService } from './deliveryController.spec';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
@@ -19,14 +20,14 @@ export interface DeliveryEvent {
 }
 
 export class DeliveryController {
-    #emailGateway: EmailGateway;
+    #emailService: EmailService;
     #mapService: MapService;
     #deliveries: Array<Delivery>;
 
-    constructor(deliveries: Array<Delivery>, emailGateway: EmailGateway = new EmailGateway()) {
+    constructor(deliveries: Array<Delivery>, emailService: EmailService = new EmailGateway()) {
         this.#deliveries = deliveries;
         this.#mapService = new MapService();
-        this.#emailGateway = emailGateway;
+        this.#emailService = emailService;
     }
 
     public async updateDelivery(event: DeliveryEvent) {
@@ -42,7 +43,7 @@ export class DeliveryController {
                 }
                 delivery.timeOfDelivery = event.timeOfDelivery;
                 let message = `Regarding your delivery today at ${delivery.timeOfDelivery}. How likely would you be to recommend this delivery service to a friend? Click <a href='url'>here</a>`
-                this.#emailGateway.send(delivery.contactEmail, "Your feedback is important to us", message)
+                this.#emailService.send(delivery.contactEmail, "Your feedback is important to us", message)
                 if(this.#deliveries.length > i + 1) {
                     nextDelivery = this.#deliveries[i + 1];
                 }
@@ -58,7 +59,7 @@ export class DeliveryController {
         if (nextDelivery !== undefined) {
             var nextEta = this.#mapService.calculateETA(event.location, nextDelivery.location);
             const message = `Your delivery to ${nextDelivery.location} is next, estimated time of arrival is in ${nextEta} minutes. Be ready!`
-            await this.#emailGateway.send(nextDelivery.contactEmail, "Your delivery will arrive soon.", message);
+            await this.#emailService.send(nextDelivery.contactEmail, "Your delivery will arrive soon.", message);
         }
     }
 }

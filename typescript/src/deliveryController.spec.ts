@@ -4,8 +4,12 @@ import { Delivery, DeliveryController } from './deliveryController';
 let emailSent = 0;
 
 
-class FakeEmailGateway {
-    send(){
+export interface EmailService {
+    send(address: string, subject: string, message: string): Promise<void>
+}
+
+class FakeEmailGateway implements EmailService {
+    async send(){
         emailSent++;
     }
 }
