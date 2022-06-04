@@ -1,9 +1,11 @@
 import { EmailService } from '../src/emailService';
 
 export class FakeEmailService implements EmailService {
-    emailSent: number = 0;
+    emailSent: { contactEmail: string};
 
-    async send() {
-        this.emailSent++;
+    async send(address: string, subject: string, message: string) {
+        this.emailSent = {
+            contactEmail: address
+        };
     }
 }

@@ -2,7 +2,7 @@ import { Delivery, DeliveryController } from './deliveryController';
 import { FakeEmailService } from '../fake/fakeEmailService';
 
 describe('When an existing delivery is updated',() => {
-    it('should send an email', () => {
+    it('should send an email to contact email', () => {
         const delivery: Delivery  = {
             arrived: false,
             contactEmail: 'vittorio.gue@gmail.com',
@@ -21,7 +21,9 @@ describe('When an existing delivery is updated',() => {
             timeOfDelivery: new Date()
         })
 
-        expect(fakeEmailService.emailSent).toBe(1)
+        expect(fakeEmailService.emailSent).toStrictEqual({
+            contactEmail: 'vittorio.gue@gmail.com'
+        });
     });
 });
 
@@ -46,6 +48,6 @@ describe('When a non existing delivery is updated', () => {
             timeOfDelivery: new Date()
         })
 
-        expect(fakeEmailService.emailSent).toBe(0)
+        expect(fakeEmailService.emailSent).toBeUndefined()
     });
 });
