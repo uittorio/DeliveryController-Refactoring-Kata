@@ -1,22 +1,20 @@
 import { Delivery, DeliveryController } from './deliveryController';
 
 
-let emailSent = 0;
-
 
 export interface EmailService {
     send(address: string, subject: string, message: string): Promise<void>
 }
 
 class FakeEmailGateway implements EmailService {
+    emailSent: number = 0;
     async send(){
-        emailSent++;
+        this.emailSent++;
     }
 }
 
 describe('When an existing delivery is updated',() => {
     it('should send an email', () => {
-        emailSent = 0;
         const delivery: Delivery  = {
             arrived: false,
             contactEmail: 'vittorio.gue@gmail.com',
@@ -25,7 +23,8 @@ describe('When an existing delivery is updated',() => {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        new DeliveryController([delivery], new FakeEmailGateway()).updateDelivery({
+        const fakeEmailGateway = new FakeEmailGateway();
+        new DeliveryController([delivery], fakeEmailGateway).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
                 latitude: 120,
@@ -34,13 +33,12 @@ describe('When an existing delivery is updated',() => {
             timeOfDelivery: new Date()
         })
 
-        expect(emailSent).toBe(1)
+        expect(fakeEmailGateway.emailSent).toBe(1)
     });
 });
 
 describe('When a non existing delivery is updated', () => {
     it('should not send an email', () => {
-        emailSent = 0;
         const delivery: Delivery  = {
             arrived: false,
             contactEmail: 'vittorio.gue@gmail.com',
@@ -50,7 +48,8 @@ describe('When a non existing delivery is updated', () => {
             timeOfDelivery: new Date()
         }
 
-        new DeliveryController([delivery], new FakeEmailGateway()).updateDelivery({
+        const fakeEmailGateway = new FakeEmailGateway();
+        new DeliveryController([delivery], fakeEmailGateway).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
                 latitude: 120,
@@ -59,6 +58,6 @@ describe('When a non existing delivery is updated', () => {
             timeOfDelivery: new Date()
         })
 
-        expect(emailSent).toBe(0)
+        expect(fakeEmailGateway.emailSent).toBe(0)
     });
 });
