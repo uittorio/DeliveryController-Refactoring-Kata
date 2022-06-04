@@ -1,5 +1,5 @@
 import { Delivery, DeliveryController } from './deliveryController';
-import { FakeEmailGateway } from '../fake/fakeEmailService';
+import { FakeEmailService } from '../fake/fakeEmailService';
 
 
 export interface EmailService {
@@ -16,7 +16,7 @@ describe('When an existing delivery is updated',() => {
             onTime: false,
             timeOfDelivery: new Date()
         }
-        const fakeEmailGateway = new FakeEmailGateway();
+        const fakeEmailGateway = new FakeEmailService();
         new DeliveryController([delivery], fakeEmailGateway).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
@@ -41,7 +41,7 @@ describe('When a non existing delivery is updated', () => {
             timeOfDelivery: new Date()
         }
 
-        const fakeEmailGateway = new FakeEmailGateway();
+        const fakeEmailGateway = new FakeEmailService();
         new DeliveryController([delivery], fakeEmailGateway).updateDelivery({
             id: 'existing-delivery-for-vittorio',
             location: {
