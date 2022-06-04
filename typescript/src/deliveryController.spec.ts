@@ -2,10 +2,6 @@ import { Delivery, DeliveryController } from './deliveryController';
 import { FakeEmailService } from '../fake/fakeEmailService';
 
 
-export interface EmailService {
-    send(address: string, subject: string, message: string): Promise<void>
-}
-
 describe('When an existing delivery is updated',() => {
     it('should send an email', () => {
         const delivery: Delivery  = {

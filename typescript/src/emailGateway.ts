@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { EmailService } from './deliveryController.spec';
+import { EmailService } from './emailService';
 
 
 export class EmailGateway implements EmailService {

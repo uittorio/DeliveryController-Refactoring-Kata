@@ -1,5 +1,5 @@
 import { Location, MapService } from './mapService';
-import { EmailService } from './deliveryController.spec';
+import { EmailService } from './emailService';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 

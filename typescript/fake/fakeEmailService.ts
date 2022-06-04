@@ -1,4 +1,4 @@
-import { EmailService } from '../src/deliveryController.spec';
+import { EmailService } from '../src/emailService';
 
 export class FakeEmailService implements EmailService {
     emailSent: number = 0;
