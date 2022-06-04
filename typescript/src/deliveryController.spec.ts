@@ -1,16 +1,9 @@
 import { Delivery, DeliveryController } from './deliveryController';
-
+import { FakeEmailGateway } from '../fake/fakeEmailService';
 
 
 export interface EmailService {
     send(address: string, subject: string, message: string): Promise<void>
-}
-
-class FakeEmailGateway implements EmailService {
-    emailSent: number = 0;
-    async send(){
-        this.emailSent++;
-    }
 }
 
 describe('When an existing delivery is updated',() => {
