@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer";
-import { EmailService } from './emailService';
+import { Customer, CustomerNotificationService } from './customerNotificationService';
 
 
-export class EmailGateway implements EmailService {
+export class EmailGateway implements CustomerNotificationService {
     #transport: nodemailer.Transporter
 
     constructor() {
@@ -15,10 +15,10 @@ export class EmailGateway implements EmailService {
 
     }
 
-    public async send(address: string, subject: string, message: string) {
+    public async send(customer: Customer, subject: string, message: string) {
         return this.#transport.sendMail({
             subject,
-            to: address,
+            to: customer.email,
             text: message
         })
     }

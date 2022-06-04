@@ -1,11 +1,11 @@
-import { EmailService } from '../src/emailService';
+import { Customer, CustomerNotificationService } from '../src/customerNotificationService';
 
-export class FakeEmailService implements EmailService {
+export class FakeEmailService implements CustomerNotificationService {
     emailSent: { contactEmail: string};
 
-    async send(address: string, subject: string, message: string) {
+    async send(customer: Customer, subject: string, message: string) {
         this.emailSent = {
-            contactEmail: address
+            contactEmail: customer.email
         };
     }
 }
