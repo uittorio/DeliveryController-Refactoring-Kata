@@ -1,5 +1,12 @@
 import { DeliveryController } from './deliveryController';
 
+
+jest.mock('./emailGateway', () => {
+    return {
+        EmailGateway: class FakeEmailGateway {}
+    }
+});
+
 describe('When something happens', function () {
     it('should send an email', () => {
 
